@@ -55,6 +55,7 @@
      <Compile Include="Assets\Scripts\Bullet.cs" />
      <Compile Include="Assets\Scripts\CanvasScript.cs" />
      <Compile Include="Assets\Scripts\CloseOpenDoor.cs" />
+     <Compile Include="Assets\Scripts\ExitGame.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\PlayerControler.cs" />
@@ -64,6 +65,7 @@
      <Compile Include="Assets\Scripts\Target.cs" />
      <Compile Include="Assets\Scripts\UNOPlayerShoot1.cs" />
      <Compile Include="Assets\Scripts\WarriorMainScript.cs" />
+     <Compile Include="Assets\Scripts\WinLevel.cs" />
      <Compile Include="Assets\Scripts\recharge.cs" />
      <Compile Include="Assets\TestLevel\scripts\ImpactAudio.cs" />
      <Compile Include="Assets\TestLevel\scripts\Lightflicker.cs" />

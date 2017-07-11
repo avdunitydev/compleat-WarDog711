@@ -22,12 +22,14 @@ public class ShootScript : MonoBehaviour
 	Animator animator;
 	public GameObject Blood;
 	public Text AmmoTextUI;
-	public AudioClip reload, shot, jump;
+	public Text AllAmmoTextUI;
+	public AudioClip reload, shot, jump, characterIsDead;
 	public AudioSource audioSource;
 
 	void Start ()
 	{
 		AmmoTextUI.text = currentAmmo.ToString ();
+		AllAmmoTextUI.text = allAmmo.ToString ();
 		mainscr = GetComponent <WarriorMainScript> ();
 		animator = GetComponent<Animator> ();
 		audioSource = GetComponent<AudioSource> ();
@@ -36,10 +38,11 @@ public class ShootScript : MonoBehaviour
 	void Update ()
 	{
 		isReloading = mainscr.Reloading;
+		AmmoTextUI.text = currentAmmo.ToString();
+		AllAmmoTextUI.text = allAmmo.ToString ();
 
 		if (Input.GetMouseButton (0) && Time.time >= nextTimeToFire && !isReloading) {
 			currentAmmo--;
-			AmmoTextUI.text = currentAmmo.ToString ();
 
 			if (currentAmmo <= 0) {
 				animator.Play ("reload_inPlace");
@@ -67,15 +70,15 @@ public class ShootScript : MonoBehaviour
 					GameObject inpact1 = Instantiate (Blood, hit.point, Quaternion.LookRotation (hit.normal));
 					Destroy (inpact1, 2f);
 					Target target = hit.transform.GetComponent<Target> ();
-				
+
 					if (target != null) {
 						target.TakeDamage (damage);
-					
-					} else {
-						GameObject inpact2 = Instantiate (impacteffect, hit.point, Quaternion.LookRotation (hit.normal));
-						Destroy (inpact2, 2f);
 					}
-				}		
+				
+				} else {
+					GameObject inpact2 = Instantiate (impacteffect, hit.point, Quaternion.LookRotation (hit.normal));
+					Destroy (inpact2, 2f);
+				}
 			}
 		} else if (!fpsCam.enabled) {
 			//print ("ELSE");
@@ -97,8 +100,7 @@ public class ShootScript : MonoBehaviour
 					Destroy (inpact2, 2f);
 				}
 
-			}
-		}
+			}}
 	}
 
 

@@ -8,10 +8,13 @@ public class CloseOpenDoor : MonoBehaviour
 	Vector3 doorOpen = new Vector3 (0, 100, 0);
 	Vector3 doorClose = new Vector3 (0, 0, 0);
 	public bool isCloseDoor = false;
+	public AudioClip soundDoor;
+	AudioSource audioSrc;
 
 	// Use this for initialization
 	void Start ()
 	{
+		audioSrc = gameObject.AddComponent<AudioSource> ();
 		//Debug.Log ("Time.time == " + Time.time);
 	}
 
@@ -24,12 +27,12 @@ public class CloseOpenDoor : MonoBehaviour
 		if (isCloseDoor && Input.GetKeyDown (KeyCode.E)) {
 			if (transform.rotation.y == 0) {
 				transform.rotation = Quaternion.Lerp (transform.rotation, Quaternion.Euler (doorOpen), Time.time * sppedCloseOpenDoor);
-				//Debug.Log ("transform.rotation.y == " + transform.rotation.y);
-				//isCloseDoor = false;
+				audioSrc.PlayOneShot (soundDoor);
+				//GetComponent<AudioSource>().PlayOneShot(soundDoor);
+
 			} else if (transform.rotation.y >= .7f) {
 				transform.rotation = Quaternion.Lerp (transform.rotation, Quaternion.Euler (doorClose), Time.time * sppedCloseOpenDoor);
-				//Debug.Log ("transform.rotation.y == " + transform.rotation.y);
-				//isCloseDoor = false;
+				audioSrc.PlayOneShot (soundDoor);
 			}
 		}
 		//Debug.Log ("Update >> Time.time == " + Time.time);

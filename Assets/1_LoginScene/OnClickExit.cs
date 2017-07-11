@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class OnClickExit : MonoBehaviour
@@ -9,12 +10,6 @@ public class OnClickExit : MonoBehaviour
 	public RectTransform mainPanel;
 	bool pause = false;
 
-	// Use this for initialization
-	void Start ()
-	{
-		
-	}
-	
 	// Update is called once per frame
 	void Update ()
 	{
@@ -24,12 +19,20 @@ public class OnClickExit : MonoBehaviour
 			Time.timeScale = 1;
 
 		if (Input.GetKeyDown (KeyCode.Escape)) {
-			crosshairImage.gameObject.SetActive (!crosshairImage.gameObject.activeInHierarchy);
-			mainPanel.gameObject.SetActive (!mainPanel.gameObject.activeInHierarchy);
-			pause = !pause;
+			if(Application.loadedLevel == 2){
+				crosshairImage.gameObject.SetActive (!crosshairImage.gameObject.activeInHierarchy);
+				mainPanel.gameObject.SetActive (!mainPanel.gameObject.activeInHierarchy);
+				pause = !pause;
+				Cursor.visible = !Cursor.visible;	
+			}else{
+				pause = !pause;
+				Cursor.visible = !Cursor.visible;
+			}
 		}
 	}
 
-
+	public void CloseGame() {
+		Application.Quit();
+	}
 
 }
