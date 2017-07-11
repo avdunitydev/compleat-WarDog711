@@ -50,9 +50,11 @@
      <Compile Include="Assets\1_LoginScene\ChangePanel.cs" />
      <Compile Include="Assets\1_LoginScene\CheckInDB.cs" />
      <Compile Include="Assets\1_LoginScene\OnClickButton.cs" />
+     <Compile Include="Assets\1_LoginScene\OnClickExit.cs" />
      <Compile Include="Assets\JumpDetection.cs" />
      <Compile Include="Assets\Scripts\Bullet.cs" />
      <Compile Include="Assets\Scripts\CanvasScript.cs" />
+     <Compile Include="Assets\Scripts\CloseOpenDoor.cs" />
      <Compile Include="Assets\Scripts\GameManager.cs" />
      <Compile Include="Assets\Scripts\Player.cs" />
      <Compile Include="Assets\Scripts\PlayerControler.cs" />
@@ -97,6 +99,10 @@
  <Reference Include="UnityEngine.VR">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
  </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
+      <Project>{8F571443-F561-42CA-310A-06AA62F19D1A}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

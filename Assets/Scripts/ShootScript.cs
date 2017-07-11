@@ -27,7 +27,7 @@ public class ShootScript : MonoBehaviour
 
 	void Start ()
 	{
-
+		AmmoTextUI.text = currentAmmo.ToString ();
 		mainscr = GetComponent <WarriorMainScript> ();
 		animator = GetComponent<Animator> ();
 		audioSource = GetComponent<AudioSource> ();
@@ -39,7 +39,7 @@ public class ShootScript : MonoBehaviour
 
 		if (Input.GetMouseButton (0) && Time.time >= nextTimeToFire && !isReloading) {
 			currentAmmo--;
-			//AmmoTextUI.text = currentAmmo.ToString();
+			AmmoTextUI.text = currentAmmo.ToString ();
 
 			if (currentAmmo <= 0) {
 				animator.Play ("reload_inPlace");
@@ -59,7 +59,6 @@ public class ShootScript : MonoBehaviour
 		audioSource.PlayOneShot (shot);
 		muzzleFlash.Play ();
 		if (fpsCam.enabled) {
-			print("12122");
 			RaycastHit hit;
 			if (Physics.Raycast (fpsCam.transform.position, fpsCam.transform.forward, out hit, range)) {
 				Debug.Log (hit.transform.name);
@@ -68,19 +67,18 @@ public class ShootScript : MonoBehaviour
 					GameObject inpact1 = Instantiate (Blood, hit.point, Quaternion.LookRotation (hit.normal));
 					Destroy (inpact1, 2f);
 					Target target = hit.transform.GetComponent<Target> ();
-
+				
 					if (target != null) {
 						target.TakeDamage (damage);
+					
+					} else {
+						GameObject inpact2 = Instantiate (impacteffect, hit.point, Quaternion.LookRotation (hit.normal));
+						Destroy (inpact2, 2f);
 					}
-				
-				} else {
-					GameObject inpact2 = Instantiate (impacteffect, hit.point, Quaternion.LookRotation (hit.normal));
-					Destroy (inpact2, 2f);
-				}
-						
+				}		
 			}
 		} else if (!fpsCam.enabled) {
-			print ("ELSE");
+			//print ("ELSE");
 			RaycastHit hit;
 			if (Physics.Raycast (tpsCam.transform.position, tpsCam.transform.forward, out hit, range)) {
 				Debug.Log (hit.transform.name);
@@ -99,7 +97,8 @@ public class ShootScript : MonoBehaviour
 					Destroy (inpact2, 2f);
 				}
 
-			}}
+			}
+		}
 	}
 
 
