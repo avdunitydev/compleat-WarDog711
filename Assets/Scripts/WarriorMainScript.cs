@@ -22,6 +22,10 @@ public class WarriorMainScript : MonoBehaviour
 	public ShootScript shoot;
 	public GameObject LeftRifle, RightRifle;
 	public int HP;
+	public Text hpUI;
+	public Slider hpSlider;
+	public bool light1 = false;
+	public Light lighter1;
 
 
 
@@ -30,6 +34,8 @@ public class WarriorMainScript : MonoBehaviour
 	void Start ()
 	{
 		HP = 100;
+		hpUI.text = HP.ToString ();
+		hpSlider.value = HP;
 		commando = GetComponent<Rigidbody> ();
 		anim = GetComponent<Animator> ();
 		isAlive = true;
@@ -72,39 +78,49 @@ public class WarriorMainScript : MonoBehaviour
 		Reloading = false;
 		LeftRifle.SetActive (true);
 		RightRifle.SetActive (false);
-		shoot.allAmmo = shoot.allAmmo - (shoot.maxAmmo - shoot.currentAmmo);
-		shoot.currentAmmo = shoot.maxAmmo;
 
-		
-
+		if (shoot.maxAmmo >= shoot.allAmmo) {
+			
+			shoot.maxAmmo = shoot.allAmmo;
+		}
+			shoot.allAmmo = shoot.allAmmo - (shoot.maxAmmo - shoot.currentAmmo);
+			shoot.currentAmmo = shoot.maxAmmo;
 	}
 
 	void Update ()
 	{
+		hpUI.text = HP.ToString ();
+		hpSlider.value = HP;
 		if (isAlive) {
 			anim.SetFloat ("YSpeed", commando.velocity.y);	
 			if (Physics.Raycast (sens.position, Vector3.down, out hit, 0.5f)) {
 				anim.SetBool ("jump", false);
 				isGround = true;
-								if (speed < 3) {
-									speed += 1.2f * Time.deltaTime;
-								}
+				if (speed < 3) {
+					speed += 1.2f * Time.deltaTime;
+				}
 				if (!anim.GetBool ("ctrl") && isGround && Input.GetKeyDown (KeyCode.Space)) {
 					shoot.audioSource.PlayOneShot (shoot.jump);
 					commando.AddForce (0, 2000, 0);
 				}
 				Debug.DrawRay (sens.position, Vector3.down);
 
-			} else 
-			{
-								if (speed > 1.2f) {
-									speed -= 2f * Time.deltaTime;
-								}
+			} else {
+				if (speed > 1.2f) {
+					speed -= 2f * Time.deltaTime;
+				}
 
 				anim.SetBool ("jump", true);
 				isGround = false;
 
 
+			}
+			if (Input.GetKeyDown (KeyCode.L) && !light1) {
+				lighter1.enabled = true;
+				light1 = true; 
+			} else if (Input.GetKeyDown (KeyCode.L) && light1) {
+				lighter1.enabled = false;
+				light1 = false; 
 			}
 			if (Input.GetKeyDown (KeyCode.T)) {
 				cam1.enabled = !cam1.enabled;
@@ -148,37 +164,35 @@ public class WarriorMainScript : MonoBehaviour
 				if (cam1.enabled) {
 					cam.transform.localPosition = new Vector3 (cam.transform.localPosition.x, 1.35f, 0.34f);
 				}
-			}
-			else{
-//			} else { if (cam1 = enabled) {
-//					cam1.transform.localPosition = new Vector3 (0.08f, 1.58f, 0.2f);
-//				}
+			} else if (cam1.enabled) {
+				cam1.transform.localPosition = new Vector3 (0.08f, 1.58f, 0.2f);
 				anim.SetBool ("ctrl", false);
+			} else {
+				anim.SetBool ("ctrl", false);}
 			}
-			if (Input.GetKeyDown (KeyCode.R)) {
-
-				anim.SetBool ("isReloading", true);
-				shoot.audioSource.PlayOneShot (shoot.reload);
-
-			}
-		} 
+		if (Input.GetKeyDown (KeyCode.R) && shoot.allAmmo > 0) {
+			anim.SetBool ("isReloading", true);
+			shoot.audioSource.PlayOneShot (shoot.reload);
+		}
 	}
 
 	void Die ()
 	{
+		shoot.audioSource.PlayOneShot(shoot.characterIsDead);
 		print("Dssds");
 		anim.SetBool ("isAlive", false);
 		anim.SetTrigger ("Rel");
 		anim.SetInteger ("DeathNumber", Random.Range (1, 7));
 		cam1.enabled = false;
 		cam2.enabled = true;
-		
+
 	}
 
 	void OnTriggerEnter (Collider coll)
 	{
+
 		if (coll.transform.name == "Weapon") {
-			HP = HP - 20;
+			HP -= 10;
 			print ("HP = " + HP);  
 
 			if (HP <= 0 && isAlive) {

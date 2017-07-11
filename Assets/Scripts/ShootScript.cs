@@ -22,12 +22,14 @@ public class ShootScript : MonoBehaviour
 	Animator animator;
 	public GameObject Blood;
 	public Text AmmoTextUI;
-	public AudioClip reload, shot, jump;
+	public Text AllAmmoTextUI;
+	public AudioClip reload, shot, jump, characterIsDead;
 	public AudioSource audioSource;
 
 	void Start ()
 	{
-
+		AmmoTextUI.text = currentAmmo.ToString ();
+		AllAmmoTextUI.text = allAmmo.ToString ();
 		mainscr = GetComponent <WarriorMainScript> ();
 		animator = GetComponent<Animator> ();
 		audioSource = GetComponent<AudioSource> ();
@@ -36,10 +38,11 @@ public class ShootScript : MonoBehaviour
 	void Update ()
 	{
 		isReloading = mainscr.Reloading;
+		AmmoTextUI.text = currentAmmo.ToString();
+		AllAmmoTextUI.text = allAmmo.ToString ();
 
 		if (Input.GetMouseButton (0) && Time.time >= nextTimeToFire && !isReloading) {
 			currentAmmo--;
-			//AmmoTextUI.text = currentAmmo.ToString();
 
 			if (currentAmmo <= 0) {
 				animator.Play ("reload_inPlace");
@@ -59,7 +62,6 @@ public class ShootScript : MonoBehaviour
 		audioSource.PlayOneShot (shot);
 		muzzleFlash.Play ();
 		if (fpsCam.enabled) {
-			print("12122");
 			RaycastHit hit;
 			if (Physics.Raycast (fpsCam.transform.position, fpsCam.transform.forward, out hit, range)) {
 				Debug.Log (hit.transform.name);
@@ -77,10 +79,9 @@ public class ShootScript : MonoBehaviour
 					GameObject inpact2 = Instantiate (impacteffect, hit.point, Quaternion.LookRotation (hit.normal));
 					Destroy (inpact2, 2f);
 				}
-						
 			}
 		} else if (!fpsCam.enabled) {
-			print ("ELSE");
+			//print ("ELSE");
 			RaycastHit hit;
 			if (Physics.Raycast (tpsCam.transform.position, tpsCam.transform.forward, out hit, range)) {
 				Debug.Log (hit.transform.name);

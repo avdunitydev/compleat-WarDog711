@@ -119,6 +119,7 @@ public class Target : MonoBehaviour {
 		}
 	}
 
+
 			void Run(){
 				agent.SetDestination(sold.position);
 				anim.SetBool ("Run", true);
@@ -143,7 +144,7 @@ public class Target : MonoBehaviour {
 				GetComponent<CapsuleCollider> ().isTrigger = true;
 				isAlive = false;
 
-		agent.Stop ();
+			agent.Stop ();
 
 			}	
 }
